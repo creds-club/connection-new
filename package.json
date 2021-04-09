@@ -4,8 +4,9 @@
   "description": "Connection game by Federico Tibaldo",
   "main": "index.js",
   "scripts": {
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "gh-pages -d dist"
   },
+  "homepage": "https://credsclub.github.io/connection-new",
   "author": "",
   "license": "ISC",
   "devDependencies": {
