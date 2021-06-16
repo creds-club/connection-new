@@ -12,7 +12,7 @@
 // ZzFXMicro - Zuper Zmall Zound Zynth 
 zzfxV=.3    // volume
 zzfx=       // play sound
-(q=1,k=.05,c=220,e=0,t=0,u=.1,r=0,F=1,v=0,z=0,w=0,A=0,l=0,B=0,x=0,G=0,d=0,y=1,m=0,C=0)=>{let b=2*Math.PI,H=v*=500*b/zzfxR**2,I=(0<x?1:-1)*b/4,D=c*=(1+2*k*Math.random()-k)*b/zzfxR,Z=[],g=0,E=0,a=0,n=1,J=0,K=0,f=0,p,h;e=99+zzfxR*e;m*=zzfxR;t*=zzfxR;u*=zzfxR;d*=zzfxR;z*=500*b/zzfxR**3;x*=b/zzfxR;w*=b/zzfxR;A*=zzfxR;l=zzfxR*l|0;for(h=e+m+t+u+d|0;a<h;Z[a++]=f)++K%(100*G|0)||(f=r?1<r?2<r?3<r?Math.sin((g%b)**3):Math.max(Math.min(Math.tan(g),1),-1):1-(2*g/b%2+2)%2:1-4*Math.abs(Math.round(g/b)-g/b):Math.sin(g),f=(l?1-C+C*Math.sin(2*Math.PI*a/l):1)*(0<f?1:-1)*Math.abs(f)**F*q*zzfxV*(a<e?a/e:a<e+m?1-(a-e)/m*(1-y):a<e+m+t?y:a<h-d?(h-a-d)/u*y:0),f=d?f/2+(d>a?0:(a<h-d?1:(h-a)/d)*Z[a-d|0]/2):f),p=(c+=v+=z)*Math.sin(E*x-I),g+=p-p*B*(1-1E9*(Math.sin(a)+1)%2),E+=p-p*B*(1-1E9*(Math.sin(a)**2+1)%2),n&&++n>A&&(c+=w,D+=w,n=0),!l||++J%l||(c=D,v=H,n=n||1);q=zzfxX.createBuffer(1,h,zzfxR);q.getChannelData(0).set(Z);c=zzfxX.createBufferSource();c.buffer=q;c.connect(zzfxX.destination);c.start();return c}
+(q=1,k=.05,c=220,e=0,t=0,u=.1,r=0,F=1,v=0,z=0,w=0,A=0,l=0,B=0,x=0,G=0,d=0,y=1,m=0,C=0)=>{let b=2*Math.PI,H=v*=500*b/zzfxR**2,I=(0<x?1:-1)*b/4,D=c*=(1+2*k*op.remotePlay.random()-k)*b/zzfxR,Z=[],g=0,E=0,a=0,n=1,J=0,K=0,f=0,p,h;e=99+zzfxR*e;m*=zzfxR;t*=zzfxR;u*=zzfxR;d*=zzfxR;z*=500*b/zzfxR**3;x*=b/zzfxR;w*=b/zzfxR;A*=zzfxR;l=zzfxR*l|0;for(h=e+m+t+u+d|0;a<h;Z[a++]=f)++K%(100*G|0)||(f=r?1<r?2<r?3<r?Math.sin((g%b)**3):Math.max(Math.min(Math.tan(g),1),-1):1-(2*g/b%2+2)%2:1-4*Math.abs(Math.round(g/b)-g/b):Math.sin(g),f=(l?1-C+C*Math.sin(2*Math.PI*a/l):1)*(0<f?1:-1)*Math.abs(f)**F*q*zzfxV*(a<e?a/e:a<e+m?1-(a-e)/m*(1-y):a<e+m+t?y:a<h-d?(h-a-d)/u*y:0),f=d?f/2+(d>a?0:(a<h-d?1:(h-a)/d)*Z[a-d|0]/2):f),p=(c+=v+=z)*Math.sin(E*x-I),g+=p-p*B*(1-1E9*(Math.sin(a)+1)%2),E+=p-p*B*(1-1E9*(Math.sin(a)**2+1)%2),n&&++n>A&&(c+=w,D+=w,n=0),!l||++J%l||(c=D,v=H,n=n||1);q=zzfxX.createBuffer(1,h,zzfxR);q.getChannelData(0).set(Z);c=zzfxX.createBufferSource();c.buffer=q;c.connect(zzfxX.destination);c.start();return c}
 zzfxX=new(window.AudioContext||webkitAudioContext) // audio context
 zzfxR=44100 // sample rate
 
@@ -306,7 +306,7 @@ class GameSingleton extends Observable {
 		this.viewPos = this.canvasSize.diff(this.viewSize).mul(1 / 2)
 	}
 	loop(newT) {
-		window.requestAnimationFrame((newT) => this.loop(newT))
+		op.remotePlay.requestAnimationFrame((newT) => this.loop(newT))
 		if (this.root) {
 			if (this.oldT) {
 				const deltaT = newT - this.oldT
@@ -328,6 +328,7 @@ class GameSingleton extends Observable {
 		}
 	}
 	play() {
+		op.remotePlay.startPlay()
 		this.loop()
 	}
 }
@@ -670,9 +671,18 @@ class InputSingleton extends Observable {
 
 		this.lastDragPoint = null
 
-		Game.canvas.onmousedown = (e) => this.onCanvasMouseDown(e)
-		Game.canvas.onmouseup = (e) => this.onCanvasMouseUp(e)
-		Game.canvas.onmousemove = (e) => this.onCanvasMouseMove(e)
+
+		//Game.canvas.onmousedown = (e) => this.onCanvasMouseDown(e)
+		this.onCanvasMouseDown = this.onCanvasMouseDown.bind(this)
+		op.remotePlay.addOnMouseDown(Game.canvas, this.onCanvasMouseDown)
+
+		//Game.canvas.onmouseup = (e) => this.onCanvasMouseUp(e)
+		this.onCanvasMouseUp = this.onCanvasMouseUp.bind(this)
+		op.remotePlay.addOnMouseUp(Game.canvas, this.onCanvasMouseUp)
+
+		//Game.canvas.onmousemove = (e) => this.onCanvasMouseMove(e)
+		this.onCanvasMouseMove = this.onCanvasMouseMove.bind(this)
+		op.remotePlay.addOnMouseMove(Game.canvas, this.onCanvasMouseMove)
 
 		Game.canvas.ontouchstart = (e) => this.onCanvasTouchStart(e)
 		Game.canvas.ontouchend = (e) => this.onCanvasTouchEnd(e)
@@ -1055,6 +1065,7 @@ class ResultsScreen extends GameObject {
       }
     }
 
+	op.remotePlay.stopPlay()
     this.refreshPage();
   }
   refreshPage() {
@@ -1869,7 +1880,7 @@ class GameBoard extends GameObject {
 	generateValue() {
 		let value = this.generationsSince.findIndex(value => value > 4)
 		if (value == -1) {
-			value = Math.floor(Math.random() * 4)
+			value = Math.floor(op.remotePlay.random() * 4)
 		}
 		this.generationsSince[value] = 0
 		this.generationsSince.forEach((count, index) => index != value && this.generationsSince[index]++)
@@ -2004,8 +2015,8 @@ class Level extends GameObject {
 		Game.root.getChild(`main`).addChild(new ResultsScreen({ score: this.score, level: this }))
 	}
 	generateCombination() {
-		if (Math.random() > 2 / 3) {
-			return range(this.comboLength).map(() => Math.floor(Math.random() * 4))
+		if (op.remotePlay.random() > 2 / 3) {
+			return range(this.comboLength).map(() => Math.floor(op.remotePlay.random() * 4))
 		} else {
 			return this.getChild(`board`).coordsToValue(this.getChild(`board`).getRandomCoords(this.comboLength))
 		}
@@ -2641,7 +2652,7 @@ function shuffle(array) {
 	while (m) {
 
 		// Pick a remaining element…
-		i = Math.floor(Math.random() * m--);
+		i = Math.floor(op.remotePlay.random() * m--);
 
 		// And swap it with the current element.
 		t = array[m];
