@@ -281,6 +281,12 @@ class GameSingleton extends Observable {
 
 		window.onresize = () => this.fitScreen()
 		this.fitScreen()
+
+		if (window.opReplicationMode) {
+			op.remotePlay.startReplicating()
+		} else {
+			op.remotePlay.startPlay(this.canvas.width, this.canvas.height)
+		}
 	}
 	fitScreen() {
 		const computedStyle = window.getComputedStyle(this.canvas)
@@ -328,7 +334,6 @@ class GameSingleton extends Observable {
 		}
 	}
 	play() {
-		op.remotePlay.startPlay()
 		this.loop()
 	}
 }
@@ -714,6 +719,7 @@ class InputSingleton extends Observable {
 		this.lastDragPoint = this.initialDragPoint = this.normalizePosition(this.eventToVector(e))
 		this.stopMomentum && this.stopMomentum()
 		this.triggerMouseEvent(`mousedown`, e)
+		console.log('onCanvasMouseDown: clientX: ' + e.clientX + ', clientY: ' + e.clientY)
 	}
 	onCanvasMouseUp(e) {
 		this.isMouseDown = false
@@ -1057,7 +1063,8 @@ class ResultsScreen extends GameObject {
     console.log(`Options are: ${options}`);
 
     if (tournament_id != `No tournament id` || tournament_id != null) {
-      console.log(`Inside submitScore`);
+      console.log(`Inside submitScore:`);
+	  console.log(options.metadata);
       const post = await op.postScore(options);
 
       if (post.statusText === 200) {
@@ -2073,6 +2080,7 @@ class Score extends GameObject {
 		this.addChild(popup)
 		const liftAnimation = Animate.lift(popup, { duration: 1000 })
 		liftAnimation.on(`end`, () => popup.destroy())
+		console.log('Score increment')
 	}
 }
 
