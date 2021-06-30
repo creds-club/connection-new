@@ -338,10 +338,7 @@ class GameSingleton extends Observable {
 	}
 }
 
-const Game = new GameSingleton({
-	canvas: document.getElementById(`game`),
-	viewRes: new Vector(64 * 1.5, 96 * 1.5)
-})
+let Game = null
 
 class Trophy {
 	constructor(name, message, condition) {
@@ -426,6 +423,7 @@ class TrophyCase {
 		])
 	}
 }
+
 TrophyCase.trophies = [
 	new Record(`3 IN A ROW`),
 	new Record(`GET SQUARE`),
@@ -625,7 +623,7 @@ class GameFont {
 	}
 }
 
-const gameFont = new GameFont(`./font.png`, `./font.meta.json`)
+let gameFont = null
 
 class Spritesheet {
 	constructor(sourcePath, meta) {
@@ -657,11 +655,7 @@ class Spritesheet {
 	}
 }
 
-const assets = new Spritesheet(`./sprites.png`, {
-	width: 11,
-	height: 11,
-	assetNames: [`triangle`, `square`, `circle`, `cross`, `lock`],
-})
+let assets = null
 
 class InputSingleton extends Observable {
 	constructor() {
@@ -780,7 +774,7 @@ class InputSingleton extends Observable {
 	}
 }
 
-const Input = new InputSingleton()
+let Input = null
 
 class Timer extends Observable {
 	constructor(duration = 0) {
@@ -1514,6 +1508,7 @@ class Button extends Area {
  * parseData(`c1`) // [`3`, `0`, `0`, `1`]
  * ```
  */
+
 function parseData(data) {
 	// parse hexadecimal number
 	return parseInt(data, 16)
@@ -2671,7 +2666,21 @@ function shuffle(array) {
 	return array;
 }
 
-(async function () {
+async function Init() {
+	Game = new GameSingleton({
+		canvas: document.getElementById(`game`),
+		viewRes: new Vector(64 * 1.5, 96 * 1.5)
+	})
+
+	gameFont = new GameFont(`./font.png`, `./font.meta.json`)
+	assets = new Spritesheet(`./sprites.png`, {
+		width: 11,
+		height: 11,
+		assetNames: [`triangle`, `square`, `circle`, `cross`, `lock`],
+	})
+
+	Input = new InputSingleton()
+
 	// load assets
 	await Promise.all([gameFont.load(), assets.load()])
 
@@ -2691,4 +2700,12 @@ function shuffle(array) {
 
 	// start game
 	Game.play()
-})()
+}
+
+// TODO: temporary for testing, remove
+if (!window.opReplicationMode) {
+	op.remotePlay.initGame(Init)
+	op.remotePlay.initSession('localhost:3005', 'optesting')
+} else {
+	Init()
+}
