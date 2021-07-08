@@ -1063,7 +1063,7 @@ class ResultsScreen extends GameObject {
     if (tournament_id != `No tournament id` || tournament_id != null) {
       console.log(`Inside submitScore:`);
 	  console.log(options.metadata);
-      const post = await op.postScore(options);
+      const post = await op.remotePlay.postScore(options);
 
       if (post.statusText === 200) {
         console.log(`Success!`)
