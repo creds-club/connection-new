@@ -2702,10 +2702,8 @@ async function Init() {
 	Game.play()
 }
 
-// TODO: temporary for testing, remove
 if (!window.opReplicationMode) {
 	op.remotePlay.initGame(Init)
-	op.remotePlay.initSession('localhost:3005', 'optesting')
 } else {
 	Init()
 }
