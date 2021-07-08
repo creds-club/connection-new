@@ -279,14 +279,15 @@ class GameSingleton extends Observable {
 		this.root = new GameObject({})
 		this.oldT = 0
 
-		window.onresize = () => this.fitScreen()
-		this.fitScreen()
-
 		if (window.opReplicationMode) {
 			op.remotePlay.startReplicating()
 		} else {
+			console.log(`startPlay(${this.canvas.width}, ${this.canvas.height})`)
 			op.remotePlay.startPlay(this.canvas.width, this.canvas.height)
 		}
+
+		window.onresize = () => this.fitScreen()
+		this.fitScreen()
 	}
 	fitScreen() {
 		const computedStyle = window.getComputedStyle(this.canvas)
@@ -296,6 +297,9 @@ class GameSingleton extends Observable {
 		)
 		this.canvas.width = this.canvasSize.x
 		this.canvas.height = this.canvasSize.y
+
+		console.log(`fitScreen(${this.canvas.width}, ${this.canvas.height})`)
+		op.remotePlay.setViewport(this.canvas.width, this.canvas.height)
 
 		this.ctx.imageSmoothingEnabled = false
 
