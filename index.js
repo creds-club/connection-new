@@ -1051,24 +1051,19 @@ class ResultsScreen extends GameObject {
 		this.freezed = false
 	}
   async submitScore() {
-    const tournament_id = op.getTournamentId();
     const scorePassed = Number(this.score);
     const options = {
-      tournament_id,
       metadata: '{"score":' + scorePassed + '}'
     };
-    console.log(`tournamentId`, tournament_id)
     console.log(`Options are: ${options}`);
 
-    if (tournament_id != `No tournament id` || tournament_id != null) {
-      console.log(`Inside submitScore:`);
-	  console.log(options.metadata);
-      const post = await op.remotePlay.postScore(options);
+	console.log(`Inside submitScore:`);
+	console.log(options.metadata);
+	const post = await op.remotePlay.postScore(options);
 
-      if (post.statusText === 200) {
-        console.log(`Success!`)
-      }
-    }
+	if (post.statusText === 200) {
+		console.log(`Success!`)
+	}
 
 	op.remotePlay.stopPlay()
     this.refreshPage();
