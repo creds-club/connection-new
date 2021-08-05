@@ -1061,12 +1061,10 @@ class ResultsScreen extends GameObject {
 	console.log(options.metadata);
 	const post = await op.remotePlay.postScore(options);
 
-	if (post.statusText === 200) {
+	if (post && post.statusText === 200) {
 		console.log(`Success!`)
 	}
-
 	op.remotePlay.stopPlay()
-    this.refreshPage();
   }
   refreshPage() {
     setTimeout(
