@@ -282,8 +282,8 @@ class GameSingleton extends Observable {
 		if (window.opReplicationMode) {
 			op.remotePlay.startReplicating()
 		} else {
-			console.log(`startPlay(${this.canvas.width}, ${this.canvas.height})`)
-			op.remotePlay.startPlay(this.canvas.width, this.canvas.height)
+			console.log(`startPlay(${window.innerWidth}, ${window.innerHeight})`)
+			op.remotePlay.startPlay(window.innerWidth, window.innerHeight)
 		}
 
 		window.onresize = () => this.fitScreen()
@@ -298,8 +298,8 @@ class GameSingleton extends Observable {
 		this.canvas.width = this.canvasSize.x
 		this.canvas.height = this.canvasSize.y
 
-		console.log(`fitScreen(${this.canvas.width}, ${this.canvas.height})`)
-		op.remotePlay.setViewport(this.canvas.width, this.canvas.height)
+		console.log(`fitScreen(${window.innerWidth}, ${window.innerHeight})`)
+		op.remotePlay.setViewport(window.innerWidth, window.innerHeight)
 
 		this.ctx.imageSmoothingEnabled = false
 
