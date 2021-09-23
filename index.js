@@ -1064,7 +1064,6 @@ class ResultsScreen extends GameObject {
 	if (post && post.statusText === 200) {
 		console.log(`Success!`)
 	}
-	op.remotePlay.stopPlay()
   }
   refreshPage() {
     setTimeout(
@@ -1163,15 +1162,12 @@ class ResultsScreen extends GameObject {
 	}
 	retry() {
 		Sound.buttonClick()
-    const tournament_id = op.getTournamentId();
-    if  (tournament_id == 'No tournament id' || tournament_id == null) {
-      if (this.level instanceof Arcade) {
-        Game.root.getChild(`main`).addChild(new Arcade({ ...this.level, children: null, opacity: 1 }))
-      } else {
-        Game.root.getChild(`main`).addChild(new Level({ ...this.level, children: null, opacity: 1 }))
-      }
-      this.destroy()
-    }
+		if (this.level instanceof Arcade) {
+			Game.root.getChild(`main`).addChild(new Arcade({ ...this.level, children: null, opacity: 1 }))
+		} else {
+			Game.root.getChild(`main`).addChild(new Level({ ...this.level, children: null, opacity: 1 }))
+		}
+		this.destroy()
     return;
 	}
 	async goToMenu() {
