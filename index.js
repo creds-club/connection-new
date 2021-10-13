@@ -1140,11 +1140,13 @@ class ResultsScreen extends GameObject {
 						children: [
 							new Button({
 								id: `retry`,
-								text: `RETRY`,
+								text: `PLEASE WAIT`,
 								align: `center`,
 								opacity: 0,
-								onClick: () => this.retry(),
-								size: new Vector(flexSize.x / 2, 17),
+								// onClick: () => this.retry(),
+								onClick: ()=>console.log("disabled click"),
+								// size: new Vector(flexSize.x / 2, 17),
+								size: new Vector(flexSize.x + 90, 17)
 							}),
 							// new Button({
 							// 	id: `menu`,
