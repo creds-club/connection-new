@@ -2300,7 +2300,7 @@ class Menu extends GameObject {
       comboLength: 3,
       locked: false,
       board: `c6 c6 c6`,
-      time: 30000, //60000
+      time: 120000,//30000
     }))
     this.destroy()
   }
